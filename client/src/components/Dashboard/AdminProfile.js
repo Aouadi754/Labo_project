@@ -40,8 +40,8 @@ const AdminProfile = ({setSearch,users,logout,user}) => {
 
         <section id="team" className="pb-5 ">
            < div style ={{display:"flex", marginBottom:"35px"}}>
-           <h1 className="section-title h1">Patients List</h1>
-     
+           <h1 className="section-title h1">Patient list</h1>
+           
 <div className="stat_out">    
                   <Button className="stat_btn" onClick={(e)=>{history.push("/stat");dispatch(getAllUsers())}} > 
                <IconContext.Provider value={{ color: "white", size:"2.5em" }}>
@@ -82,7 +82,8 @@ Not yet
       
 </div>
 <div className="list">
-{(value==='All'?users:users.filter(el=>el.status===value)).map((user,id) =>
+
+{(value==='All'?users:users.filter(el=>el.status===value)).map((patient,id) =>
                <div   key={id}>
 
             <div className="card">
@@ -94,30 +95,30 @@ Not yet
   <GoTrashcan  onClick={()=>dispatch(deleteUser(user._id))} />
   </IconContext.Provider>
                 <img style={{width:"75px",borderRadius: "50px",marginTop: "-50px", marginLeft: "150px" }} src="https://image.shutterstock.com/z/stock-vector-blank-avatar-placeholder-on-transparent-background-1097191784.jpg" alt="profile-sample4" className="profile" />
-            <h4 className="name">Name: {user.name}</h4>
+            <h4 className="name">Name: {patient.name}</h4>
 
-            <h4>Result: {user.status} </h4>
+            <h4>Result: {patient.status} </h4>
 
-            <h4>Reason: {user.reason} </h4>
-
-            <h4 className={user.status!=='Not yet'?'description_task':''}>Test date: {user.test_date}</h4>
-            <h4 className={user.status!=='Not yet'?'description_task':''} >Result date: {user.result_date}</h4>
+            <h4>Reason: {patient.reason} </h4>
+            
+            <h4 className={patient.status!=='Not yet' ?'description_task':''}>Test date: {user.test_date}</h4>
+            <h4 className={patient.status!=='Not yet'?'description_task':''} >Result date: {user.result_date}</h4>
                        </div>
             </div>
             <div className="face face2">
               <div className="content">
-            <h4>Email: {user.email}</h4>
-            <h4>Phone: {user.phone}</h4>
-            <h4>Age: {user.age} years old</h4>
+            <h4>Email: {patient.email}</h4>
+            <h4>Phone: {patient.phone}</h4>
+            <h4>Age: {patient.age} years old</h4>
             <Form.Group as={Col} controlId="formGridState">
       <Form.Label>Result</Form.Label>
 
-      <Form.Control as="select" value={user.status}   onChange={(e)=>{const x= e.target.value; setStatus(x)}} name="result">
+      <Form.Control as="select" value={patient.status}   onChange={(e)=>{const x= e.target.value; setStatus(x)}} name="result">
         <option value="Not yet">Not yet</option>
         <option value="Positive">Positive</option>
         <option value="Negative"  >Negative</option>
       </Form.Control>
-      <button onClick={()=>{dispatch(editUser(user._id,{status} ));dispatch(getAllUsers())}}>ok</button>
+      <button onClick={()=>{dispatch(editUser(patient._id,{status} ));dispatch(getAllUsers())}}>ok</button>
 
     </Form.Group> 
                         </div>

@@ -20,7 +20,7 @@ function Dashboard() {
         <div>
             {isAdmin===0?
             <UserProfile user={user} logout={logout}/>:<AdminProfile users={users.filter( 
-                user => user.name.toLowerCase().includes(search.toLowerCase().trim()) )} setSearch={setSearch} logout={logout}/>
+                user => user.name.toLowerCase().includes(search.toLowerCase().trim()) )} setSearch={setSearch} logout={logout} user={user}/>
            }
           
             

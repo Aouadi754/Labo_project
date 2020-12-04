@@ -1,41 +1,112 @@
-import React,{useState} from 'react'
-
-// import {useDispatch, useSelector} from 'react-redux'
-// import axios from "axios"
+import React,{useState, useEffect} from 'react'
+import {Bar, Pie} from 'react-chartjs-2'
 import { Button, Form} from "react-bootstrap"
 import { Col } from 'reactstrap';
-import { useHistory, Link } from "react-router-dom";
-
-
-
 import { IconContext } from "react-icons";
 import {GoTrashcan} from "react-icons/go"
-import {RiLogoutBoxRLine} from "react-icons/ri"
+import {RiLogoutBoxRLine, RiCheckboxCircleLine} from "react-icons/ri"
 import {FcStatistics} from "react-icons/fc"
+import {FaChevronUp} from "react-icons/fa"
 import { useDispatch } from "react-redux";
-
 import { deleteUser, getAllUsers,editUser } from "../../Redux/actions/authActions";
-
-
 import "./CSS/AdminProfile.css"
 
 
-
-const AdminProfile = ({setSearch,users,logout,user}) => {
-
-  const history = useHistory();
+const AdminProfile = ({setSearch,users,logout}) => {
   const dispatch = useDispatch();
- 
-  
-  const [value,setValue]=useState('All')
-
+   const [value,setValue]=useState('All')
   const [status,setStatus]=useState('')
   
- 
+  let total= users.length
+  let  x = users.filter(e => e.status === "Positive").length;
+  let  y = users.filter(e => e.status === "Negative").length;
+  let  z = users.filter(e => e.status === "Not yet").length;
+  
+  const [graph, setGraph] = useState({})
+  const [graphPie, setGraphPie] = useState({})
+  const chart=()=>{
+      setGraph ( {
+          labels: ['Total','Pending','Positive', 'Negative'],
+          datasets: [
+              {
+                  label: 'Patients Status',
+                  data: [total, z, x, y],
+                  backgroundColor: [
+                    'rgba(153, 102, 255, 1)',        
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)'      
+        
+                                ],
+                  borderColor: [
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)'      
+                  ],
+                  borderWidth: 2
+              } ],
+                            } );
+        setGraphPie({
+          labels: ['Pending','Positive', 'Negative'],
+          datasets: [
+              {
+                  label: 'Patients Status',
+                  data: [Math.round((z*100)/total), Math.round((x*100)/total), Math.round((y*100)/total)],
+                  backgroundColor: [
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)'      
+                                ],
+                  borderColor: [
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)'                                    
+                  ],
+                  borderWidth: 4
+              } ],
+                            }
 
-    
+        );
+                            
+            
+  }
+  const options = {
+      title:{
+       display :true,
+       text : "Patient Numbers By Status",
+       fontSize : 35
+      },
+      legend:{
+       position : "right"
+      },
+          scales: {
+              yAxes: [{
+                  ticks: {
+                     min:0,
+                     max:total,
+                     stepSize :5
+                  }
+              }]
+          }
+      }
+  const pieOptions = {
+        title:{
+         display :true,
+         text : "Patients Status in %",
+         fontSize : 35
+        },
+        legend:{
+         position : "right"
+        },
+           
+        }
+  
+useEffect(() => {
+  chart();
+ }, [users])
 
-    return (
+     return (
        <>
 
         <section id="team" className="pb-5 ">
@@ -43,11 +114,11 @@ const AdminProfile = ({setSearch,users,logout,user}) => {
            <h1 className="section-title h1">Patient list</h1>
            
 <div className="stat_out">    
-                  <Button className="stat_btn" onClick={(e)=>{history.push("/stat");dispatch(getAllUsers())}} > 
+                  <a href="#statistics"><Button className="stat_btn" > 
                <IconContext.Provider value={{ color: "white", size:"2.5em" }}>
             < FcStatistics/> 
             </IconContext.Provider> 
-            </Button>
+            </Button></a>
                <Button className="logout_btn"  onClick={() => dispatch(logout())}   > 
                <IconContext.Provider value={{ color: "white", size:"2.5em" }}>
             < RiLogoutBoxRLine/> 
@@ -83,42 +154,44 @@ Not yet
 </div>
 <div className="list">
 
-{(value==='All'?users:users.filter(el=>el.status===value)).map((patient,id) =>
+{(value==='All'?users:users.filter(el=>el.status===value)).map((user,id) =>
                <div   key={id}>
-
             <div className="card">
-
-
             <div className="face face1">
               <div className="content">
                        <IconContext.Provider  value={{ color: "red", className: "trash", size:"2em" }}>
   <GoTrashcan  onClick={()=>dispatch(deleteUser(user._id))} />
   </IconContext.Provider>
                 <img style={{width:"75px",borderRadius: "50px",marginTop: "-50px", marginLeft: "150px" }} src="https://image.shutterstock.com/z/stock-vector-blank-avatar-placeholder-on-transparent-background-1097191784.jpg" alt="profile-sample4" className="profile" />
-            <h4 className="name">Name: {patient.name}</h4>
+            <h4 className="name">Name: {user.name}</h4>
 
-            <h4>Result: {patient.status} </h4>
+            <h4>Result: {user.status} </h4>
 
-            <h4>Reason: {patient.reason} </h4>
+            <h4>Reason: {user.reason} </h4>
             
-            <h4 className={patient.status!=='Not yet' ?'description_task':''}>Test date: {user.test_date}</h4>
-            <h4 className={patient.status!=='Not yet'?'description_task':''} >Result date: {user.result_date}</h4>
+            <h4 className={user.status!=='Not yet' ?'description_task':''}>Test date: {user.test_date}</h4>
+            <h4 className={user.status!=='Not yet'?'description_task':''} >Result date: {user.result_date}</h4>
                        </div>
             </div>
             <div className="face face2">
               <div className="content">
-            <h4>Email: {patient.email}</h4>
-            <h4>Phone: {patient.phone}</h4>
-            <h4>Age: {patient.age} years old</h4>
+            <h4>Email: {user.email}</h4>
+            <h4>Phone: {user.phone}</h4>
+            <h4>Age: {user.age} years old</h4>
             <Form.Group as={Col} controlId="formGridState">
       <Form.Label>Result</Form.Label>
 
-      <Form.Control as="select" value={patient.status}   onChange={(e)=>{const x= e.target.value; setStatus(x)}} name="result">
+      <Form.Control as="select" value={user.status}   onChange={(e)=>{const x= e.target.value; setStatus(x)}} name="result">
         <option value="Not yet">Not yet</option>
         <option value="Positive">Positive</option>
         <option value="Negative"  >Negative</option>
       </Form.Control>
-      <button onClick={()=>{dispatch(editUser(patient._id,{status} ));dispatch(getAllUsers())}}>ok</button>
+    
+
+
+      <IconContext.Provider  value={{ color: "black", className: "ok", size:"2em" }}>
+  <RiCheckboxCircleLine  onClick={()=>{dispatch(editUser(user._id,{status} ));dispatch(getAllUsers())}} />
+  </IconContext.Provider>
 
     </Form.Group> 
                         </div>
@@ -127,9 +200,21 @@ Not yet
     </div>   
  )}
  </div>
+ <div id="statistics" >
+            <h1 style={{color:" rgb(100, 131, 192)"}}>Statistics</h1>
+            <div  >
+    <Bar data={graph} options={options}/>   
+            </div>
+    <Pie data={graphPie} options={pieOptions}/>   
+         </div>
+
+         <a href="#team"><Button className="top_btn" > 
+               <IconContext.Provider value={{ color: "white", size:"2.5em" }}>
+            < FaChevronUp/> 
+            </IconContext.Provider> 
+            </Button></a>
        </section>
              </>
-
     )
 }
 

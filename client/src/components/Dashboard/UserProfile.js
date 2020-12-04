@@ -1,13 +1,13 @@
 import React, {useState} from 'react'
-import { Button,Modal,InputGroup, FormControl,Form} from "react-bootstrap"
+import { Button,Modal,InputGroup, FormControl} from "react-bootstrap"
 import{Link} from "react-router-dom"
-import { Col } from 'reactstrap';
-import {Calendar} from "react-calendar"
+
 import { IconContext } from "react-icons";
 import {FaEdit} from "react-icons/fa"
 import "./CSS/UserProfile.css"
 import { useDispatch } from "react-redux";
 import { editUser } from "../../Redux/actions/authActions";
+import {RiLogoutBoxRLine} from "react-icons/ri"
 var moment = require('moment');
 
 
@@ -60,7 +60,11 @@ const handleConfirm = () => {
     return (
         <div className="all">
             <h1>Patient Profile</h1>
-            <button onClick={() => dispatch(logout())}>Logout</button>  
+             
+            <Button className="logout_btn"  onClick={() => dispatch(logout())}   > 
+               <IconContext.Provider value={{ color: "white", size:"2.5em" }}>
+            < RiLogoutBoxRLine/> 
+            </IconContext.Provider> </Button>     
                 <div className="profile">
           <div className="card">
             <div className="face face1">

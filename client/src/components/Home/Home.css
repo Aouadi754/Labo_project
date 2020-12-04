@@ -4,10 +4,14 @@
   line-height: 1.15;
   -webkit-text-size-adjust: 100%;
 }
+
 @import url(https://fonts.googleapis.com/css2?family=Martel+Sans:wght@400;700;800&display=swap);
 :root {
   --bg-primary-landing: rgb(215, 235, 255);
 }
+
+  
+ 
 
 .landing-page {
   overflow-x: hidden;

@@ -3,7 +3,7 @@ const User = require("../models/userModel");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const config = require('config');
-const { registerRules,loginRules, validator } = require('../middlewares/validator');
+const { registerRules,loginRules,editRules, validator } = require('../middlewares/validator');
 const isAuth = require('../middlewares/isAuth');
 const isAuthAdmin = require('../middlewares/isAuthAdmin');
 

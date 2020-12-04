@@ -131,12 +131,13 @@ export const editUser = (_id, editContact) => (dispatch) => {
     .then((res) =>dispatch(getAuthUser()) )
     .catch((err) => console.log(err));
 };
+    
 export const logout = () => (dispatch) => {
   dispatch({
     type: LOGOUT,
   });
 };
-const setLoading = () => (dispatch) => {
+export const setLoading = () => (dispatch) => {
   dispatch({
     type: SET_LOADING,
   });

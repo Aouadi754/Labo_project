@@ -1,21 +1,18 @@
 import React, {useState} from 'react'
 import { Button,Modal,InputGroup, FormControl} from "react-bootstrap"
 import{Link} from "react-router-dom"
-
 import { IconContext } from "react-icons";
 import {FaEdit} from "react-icons/fa"
+import {RiLogoutBoxRLine} from "react-icons/ri"
 import "./CSS/UserProfile.css"
 import { useDispatch } from "react-redux";
 import { editUser } from "../../Redux/actions/authActions";
-import {RiLogoutBoxRLine} from "react-icons/ri"
+
 var moment = require('moment');
-
-
 
 const UserProfile=({user,logout})=> {
 
     const dispatch = useDispatch();
-    const [date, setDate] = useState(new Date())
     const [newUser, setNewUser] = useState({
         name: user.name,
         phone: user.phone,
@@ -34,12 +31,6 @@ const [show, setShow] = useState(false);
 
 const handleClose = () => setShow(false);
 const handleShow = () => setShow(true);
-const onChange =(date) =>{
-  setDate(date);
-  setNewUser({...newUser,travel_date:date})
-  
-
-};
 
 
 const handleChange = (event) => {
@@ -60,11 +51,11 @@ const handleConfirm = () => {
     return (
         <div className="all">
             <h1>Patient Profile</h1>
-             
             <Button className="logout_btn"  onClick={() => dispatch(logout())}   > 
                <IconContext.Provider value={{ color: "white", size:"2.5em" }}>
             < RiLogoutBoxRLine/> 
-            </IconContext.Provider> </Button>     
+            </IconContext.Provider> </Button> 
+
                 <div className="profile">
           <div className="card">
             <div className="face face1">

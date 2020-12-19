@@ -39,7 +39,7 @@ import { useHistory,Link } from "react-router-dom";
     <Form>
   <Form.Row>
   <Form.Group as={Col} controlId="formGridEmailL">
-      <Form.Label>Email</Form.Label>
+      <Form.Label>Email 11</Form.Label>
       <Form.Control type="email" placeholder="name@example.com" onChange={handleChange}   name="email" />
     </Form.Group>
          </Form.Row>
